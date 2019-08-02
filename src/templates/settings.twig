@@ -1,0 +1,85 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Components plugin for Craft CMS 3.x
+ *
+ * Components Settings.twig
+ *
+ * @author    Union
+ * @copyright Copyright (c) 2019 Union
+ * @link      https://github.com/unionco
+ * @package   Components
+ * @since     0.0.1
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+{{
+    forms.textField({
+        label: 'Plugin Name',
+        instructions: 'Name of the plugin as displayed in the CP',
+        id: 'pluginName',
+        name: 'pluginName',
+        value: settings.pluginName
+    })
+}}
+
+{{
+    forms.editableTableField({
+        label: "Installed Components"|t('components'),
+        instructions: "Choose which components to install."|t('components'),
+        id: 'installedComponents',
+        name: 'installedComponents',
+        cols: {
+            name: {
+                type: 'heading',
+                heading: 'Name'|t('components'),
+                class: 'thin'
+            },
+            handle: {
+                type: 'heading',
+                heading: 'Handle'|t('components'),
+                class: 'thin'
+            },
+            installed: {
+                type: 'lightswitch',
+                heading: 'Installed'|t('components'),
+                class: 'thin type-channel type-structure'
+            },
+        },
+        rows: comps.manager.getAllComponents,
+        staticRows: true
+    })
+}}
+
+{# {{ component.render({
+    attr: {
+        id: '',
+        class: 'Brand modifier class',
+        masonry: true
+    }
+}) }} #}
+
+{# {% js %}
+    var $siteRows = $('#settings-installedComponents').children('tbody').children(),
+        $lightswitches = $siteRows.children('td:nth-child(3)').children('.lightswitch'),
+        $input = $('settings[installedComponents]');
+
+    
+    function updateSites() {
+        $lightswitches.each(function() {
+            if ($(this).data('lightswitch').on) {
+                $(this).parent().nextAll('td').removeClass('disabled').find('textarea,div.lightswitch,input').attr('tabindex', '0');
+            } else {
+                $(this).parent().nextAll('td').addClass('disabled').find('textarea,div.lightswitch,input').attr('tabindex', '-1');
+            }
+        });
+    }
+
+    $lightswitches.on('change', updateSites);
+
+    Garnish.$doc.ready(function() {
+        updateSites();
+    });
+{% endjs %} #}

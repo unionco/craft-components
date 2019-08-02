@@ -1,0 +1,22 @@
+{% embed 'components/embed/flexibleContent' %}
+    {% block eyebrow %}
+        {%- if component.ucontent.eyebrow -%}
+            <h4>{{ component.ucontent.eyebrow }}</h4>
+        {%- endif -%}
+    {% endblock %}
+    {% block heading %}
+        {%- if component.ucontent.heading -%}
+            <h2>{{ component.ucontent.heading }}</h2>
+        {%- endif -%}
+    {% endblock %}
+    {% block subheading %}
+        {%- if component.ucontent.subheading -%}
+            <h3>{{ component.ucontent.subheading }}</h3>
+        {%- endif -%}
+    {% endblock %}
+    {% block copy %}
+        {%- if component.ucontent.copy -%}
+            {{ component.ucontent.copy }}
+        {%- endif -%}
+    {% endblock %}
+{% endembed %}

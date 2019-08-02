@@ -1,0 +1,38 @@
+{
+    "name": "unionco/components",
+    "description": "A component library for Craft cms.",
+    "type": "craft-plugin",
+    "version": "0.0.1",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "components"
+    ],
+    "support": {
+        "docs": "https://github.com/unionco/components/blob/master/README.md",
+        "issues": "https://github.com/unionco/components/issues"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Union",
+            "homepage": "https://github.com/unionco"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0-RC1"
+    },
+    "autoload": {
+        "psr-4": {
+          "unionco\\components\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Components",
+        "handle": "components",
+        "changelogUrl": "https://raw.githubusercontent.com/unionco/components/master/CHANGELOG.md",
+        "class": "unionco\\components\\Components"
+    }
+}
