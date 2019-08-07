@@ -190,4 +190,9 @@ class FieldsGenerator extends Component implements GeneratorInterface
                 return false;
         }
     }
+
+    public static function isComplex($fieldType): bool
+    {
+        return $fieldType === 'supertable' || $fieldType === 'matrix';
+    }
 }

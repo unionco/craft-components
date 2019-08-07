@@ -45,6 +45,22 @@ class ComponentController extends GeneratorController
             $field = $this->select('Add fields: ', array_merge($availableFields, ['done' => 'Finished adding fields']));
         }
 
+        echo PHP_EOL . PHP_EOL;
+        echo $this->ansiFormat('Preview', Console::FG_GREEN) . PHP_EOL . PHP_EOL;
+        
+        echo $this->ansiFormat('Component Name:', Console::FG_CYAN) . PHP_EOL;
+        echo "\t$name\n";
+
+        echo $this->ansiFormat('Component Fields:', Console::FG_CYAN) . PHP_EOL;
+        foreach ($this->opts['fields'] as $field) {
+            echo "\t$field\n";
+        }
+
+        echo PHP_EOL . PHP_EOL;
+        if (!$this->confirm('Proceed?')) {
+            exit(1);
+        }
+
         parent::actionGenerate($name);
     }
 }
