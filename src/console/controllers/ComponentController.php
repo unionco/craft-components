@@ -37,12 +37,12 @@ class ComponentController extends Controller
 
         [$rows, $warnings, $errors] = $this->outputToRows($output);
         echo Table::widget([
-            'headers' => ['Action', 'File Name', 'Absolute Path', 'Errors', 'Warnings', 'Success'],
+            'headers' => ['Action', 'File Name', 'Absolute Path', 'Warnings', 'Errors', 'Success'],
             'rows' => $rows,
         ]);
 
         if ($warnings) {
-            echo $this->ansiFormat("Warnings\n", Console::FG_YELLOW);
+            echo $this->ansiFormat("\nWarnings\n", Console::FG_YELLOW);
             echo Table::widget([
                 'headers' => ['Action', 'Warnings'],
                 'rows' => $warnings,
@@ -50,7 +50,7 @@ class ComponentController extends Controller
         }
 
         if ($errors) {
-            echo $this->ansiFormat("Errors\n", Console::FG_RED);
+            echo $this->ansiFormat("\nErrors\n", Console::FG_RED);
             echo Table::widget([
                 'headers' => ['Action', 'Errors'],
                 'rows' => $errors,
@@ -71,7 +71,6 @@ class ComponentController extends Controller
             $rowWarnings = '';
             if (count($row->warnings)) {
                 $rowWarnings = count($row->warnings); //$this->ansiFormat(count($row->warnings), Console::FG_YELLOW);
-                // $warnings[$row->action] = $row->warnings;
                 foreach ($row->warnings as $w) {
                     $warnings[] = [$row->action, $w];
                 }

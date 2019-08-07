@@ -1,5 +1,5 @@
 {% embed 'components/embed/{{ComponentCamel}}' %}
-    {# Add a {% block %} for each block in your component #}
+    {# Add a {% block %} for each block in your component, for example: #}
     {# {% block eyebrow %}
         {%- if component.ucontent.eyebrow -%}
             <h4>{{ component.ucontent.eyebrow }}</h4>

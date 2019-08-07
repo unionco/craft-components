@@ -107,6 +107,7 @@ class Generator extends Component
         
         try {
             FileHelper::writeToFile($filePath, '');
+            $output->warnings[] = 'Empty YAML file has been generated. You must add your own config to the file before installing the component';
             $output->success = true;
         } catch (InvalidArgumentException $e) {
             $output->errors[] = 'Parent directory does not exist';
@@ -159,8 +160,6 @@ class Generator extends Component
         $template = file_get_contents(self::$twigEmbedTemplate);
         $template = $this->replaceTemplateName($name, $template);
 
-        $output->warnings[] = 'Testing';
-        $output->warnings[] = 'Testing Again';
         try {
             FileHelper::writeToFile($filePath, $template);
             $output->success = true;
