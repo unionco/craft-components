@@ -26,7 +26,8 @@ use unionco\components\services\Page;
 use craft\events\RegisterUrlRulesEvent;
 use unionco\components\models\Settings;
 use unionco\components\services\Manager;
-use unionco\components\services\Generator;
+use unionco\components\services\ComponentsGenerator;
+use unionco\components\services\FieldsGenerator;
 use craft\web\twig\variables\CraftVariable;
 use craft\events\RegisterTemplateRootsEvent;
 use unionco\components\helpers\ConfigHelper;
@@ -67,6 +68,9 @@ class Components extends Plugin
     /** @var string */
     public static $templatesSystemDirectory = '';
 
+    /** @var string */
+    public static $enumDirectory = '';
+
     // Public Properties
     // =========================================================================
 
@@ -99,6 +103,7 @@ class Components extends Plugin
         self::$componentsClassDirectory = $this->getBasePath() . '/components';
         self::$templatesEmbedDirectory = $this->getBasePath() . '/templates/embed';
         self::$templatesSystemDirectory = $this->getBasePath() . '/templates/system';
+        self::$enumDirectory = $this->getBasePath() . '/enum';
 
         // Add in our console commands
         if (Craft::$app instanceof ConsoleApplication) {
@@ -112,7 +117,8 @@ class Components extends Plugin
         $this->setComponents([
             'manager' => Manager::class,
             'page' => Page::class,
-            'generator' => Generator::class,
+            'componentsGenerator' => ComponentsGenerator::class,
+            'fieldsGenerator' => FieldsGenerator::class,
         ]);
         
         // Base template directory

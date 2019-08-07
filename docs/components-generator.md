@@ -1,5 +1,5 @@
-# Components - Generator
-Use the generator utility to create scaffoling for a new component.
+# Components Generator
+Use the component generator utility to create scaffoling for a new component.
 
 ### Usage
 ```shell

@@ -2,8 +2,6 @@
 
 Full plugin documentation ...
 
-### Component Generator
-```shell
-$ php craft components/component/generate "Full Width Callout"
-```
-[Generator documentation](docs/generator.md)
+### Generators
+- [Component Generator](docs/components-generator.md)
+- [Fields Generator](docs/fields-generator.md)

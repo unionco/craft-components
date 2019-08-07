@@ -1,0 +1,11 @@
+name: '{{FieldName}}'
+handle: {{FieldHandle}}
+instructions: '{{FieldInstructions}}'
+searchable: true
+translationMethod: site
+translationKeyFormat: null
+type: craft\fields\Lightswitch
+settings:
+  on: '1'
+contentColumnType: boolean
+fieldGroup: null
