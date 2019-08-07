@@ -6,6 +6,7 @@ use craft\base\Component;
 use yii\base\ErrorException;
 use craft\helpers\FileHelper;
 use craft\helpers\StringHelper;
+use Symfony\Component\Yaml\Yaml;
 use unionco\components\Components;
 use unionco\components\models\GeneratorOutput;
 use unionco\components\services\GeneratorInterface;
@@ -31,9 +32,20 @@ class ComponentsGenerator extends Component implements GeneratorInterface
     /** @var string */
     public static $enumAllTemplate = '';
 
+
+    /** @var string */
+    public $name = '';
+
+    /** @var string */
+    public $type = 'supertable';
+
+    /** @var string[] */
+    public $fields = [];
+
+    /** @return void */
     public function init()
     {
-        self::$generatorTemplatesDir = Components::$plugin->getBasePath() . '/generator-templates';
+        self::$generatorTemplatesDir = Components::$plugin->getBasePath() . '/generator-templates/components';
         self::$phpClassTemplate = self::$generatorTemplatesDir . '/Component.php.template';
         self::$twigEmbedTemplate = self::$generatorTemplatesDir . '/component.embed.twig.template';
         self::$twigSystemTemplate = self::$generatorTemplatesDir . '/component.system.twig.template';
@@ -43,53 +55,57 @@ class ComponentsGenerator extends Component implements GeneratorInterface
     }
 
     /**
-     * Return the input in camelCase
-     * 
-     * Full Width Callout -> fullWidthCallout
-     * 
-     * @param string $name
-     * @return string
-     */
-    public function nameToCamelCase($name)
-    {
-        $pascalCase = $this->nameToPascalCase($name);
-        $camelCase = lcfirst($pascalCase);
-
-        return $camelCase;
-    }
-
-    /**
-     * Return the input in PascalCase
-     * 
-     * Full Width Callout -> FullWidthCallout
-     * 
-     * @param string $name
-     * @return string
-     */
-    public function nameToPascalCase($name)
-    {
-        $pascalCase = preg_replace('/\-/', ' ', $name);
-        $pascalCase = StringHelper::mb_ucwords($pascalCase);
-        $pascalCase = preg_replace('/[^A-Za-z]/', '', $pascalCase);
-        
-        return $pascalCase;
-    }
-
-    /**
      * Generate scaffolding for a new component
      * @param string $name
      * @param array $opts
-     * @return array
+     * @return GeneratorOutput[]
      */
     public function generate($name, $opts = []): array
     {
+        $this->name = $name;
+        $this->fields = $opts['fields'] ?? [];
+
+        /** @var GeneratorOutput[] */
         $output = [];
-        $output[] = $this->generateEmptyConfigYaml($name);
-        $output[] = $this->generateComponentClass($name);
-        $output[] = $this->generateTwigEmbed($name);
-        $output[] = $this->generateTwigSystem($name);
-        $output[] = $this->generateEnumConst($name);
-        $output[] = $this->generateEnumAll($name);
+        // $output[] = $this->generateEmptyConfigYaml();
+        $output[] = $this->generateConfigYaml();
+        $output[] = $this->generateComponentClass();
+        $output[] = $this->generateTwigEmbed();
+        $output[] = $this->generateTwigSystem();
+        $output[] = $this->generateEnumConst();
+        $output[] = $this->generateEnumAll();
+
+        return $output;
+    }
+
+    /**
+     * @return GeneratorOutput
+     */
+    private function generateConfigYaml()
+    {
+        $targetDir = Components::$componentsConfigDirectory;
+        $pascalCase = StringHelper::toPascalCase($this->name);
+        $fileName = $pascalCase . '.yaml';
+        $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
+        
+        $output = new GeneratorOutput();
+        $output->action = 'Create component config YAML';
+        // $output->relativeDirectory = 
+        $output->absoluteDirectory = $targetDir;
+        $output->fileName = $fileName;
+       
+        $templatePath = self::$generatorTemplatesDir . DIRECTORY_SEPARATOR . $this->type . '.yaml.template';
+        $template = Yaml::parse(file_get_contents($templatePath));//file_get_contents($)
+
+        try {
+            FileHelper::writeToFile($filePath, '');
+            $output->warnings[] = 'Empty YAML file has been generated. You must add your own config to the file before installing the component';
+            $output->success = true;
+        } catch (InvalidArgumentException $e) {
+            $output->errors[] = 'Parent directory does not exist';
+        } catch (ErrorException $e) {
+            $output->errors[] = 'Generating empty YAML config file failed';
+        }
 
         return $output;
     }
@@ -98,10 +114,10 @@ class ComponentsGenerator extends Component implements GeneratorInterface
      * @param string $name
      * @return GeneratorOutput
      */
-    private function generateEmptyConfigYaml($name)
+    private function generateEmptyConfigYaml()
     {
         $targetDir = Components::$componentsConfigDirectory;
-        $pascalCase = $this->nameToPascalCase($name);
+        $pascalCase = StringHelper::toPascalCase($this->name);
         $fileName = $pascalCase . '.yaml';
         $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
         
@@ -124,10 +140,10 @@ class ComponentsGenerator extends Component implements GeneratorInterface
         return $output;
     }
 
-    private function generateComponentClass($name)
+    private function generateComponentClass()
     {
         $targetDir = Components::$componentsClassDirectory;
-        $pascalCase = $this->nameToPascalCase($name);
+        $pascalCase = StringHelper::toPascalCase($this->name);
         $fileName = $pascalCase . '.php';
         $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
 
@@ -137,7 +153,7 @@ class ComponentsGenerator extends Component implements GeneratorInterface
         $output->fileName = $fileName;
 
         $template = file_get_contents(self::$phpClassTemplate);
-        $template = $this->replaceTemplateName($name, $template);
+        $template = $this->replaceTemplateName($this->name, $template);
 
         try {
             FileHelper::writeToFile($filePath, $template);
@@ -151,10 +167,10 @@ class ComponentsGenerator extends Component implements GeneratorInterface
         return $output;
     }
 
-    private function generateTwigEmbed($name)
+    private function generateTwigEmbed()
     {
         $targetDir = Components::$templatesEmbedDirectory;
-        $camelCase = $this->nameToCamelCase($name);
+        $camelCase = StringHelper::toCamelCase($this->name);
         $fileName = $camelCase . '.twig';
         $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
 
@@ -164,7 +180,7 @@ class ComponentsGenerator extends Component implements GeneratorInterface
         $output->fileName = $fileName;
 
         $template = file_get_contents(self::$twigEmbedTemplate);
-        $template = $this->replaceTemplateName($name, $template);
+        $template = $this->replaceTemplateName($this->name, $template);
 
         try {
             FileHelper::writeToFile($filePath, $template);
@@ -178,10 +194,10 @@ class ComponentsGenerator extends Component implements GeneratorInterface
         return $output;
     }
 
-    private function generateTwigSystem($name)
+    private function generateTwigSystem()
     {
         $targetDir = Components::$templatesSystemDirectory;
-        $camelCase = $this->nameToCamelCase($name);
+        $camelCase = StringHelper::toCamelCase($this->name);
         $fileName = $camelCase . '.twig';
         $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
 
@@ -191,7 +207,7 @@ class ComponentsGenerator extends Component implements GeneratorInterface
         $output->fileName = $fileName;
 
         $template = file_get_contents(self::$twigSystemTemplate);
-        $template = $this->replaceTemplateName($name, $template);
+        $template = $this->replaceTemplateName($this->name, $template);
 
         try {
             FileHelper::writeToFile($filePath, $template);
@@ -205,7 +221,7 @@ class ComponentsGenerator extends Component implements GeneratorInterface
         return $output;
     }
 
-    private function generateEnumConst($name)
+    private function generateEnumConst()
     {
         $targetDir = Components::$enumDirectory;
         $fileName = 'Components.php';
@@ -217,7 +233,7 @@ class ComponentsGenerator extends Component implements GeneratorInterface
         $output->fileName = $fileName;
 
         $template = file_get_contents(self::$enumConstTemplate);
-        $template = $this->replaceTemplateName($name, $template);
+        $template = $this->replaceTemplateName($this->name, $template);
 
         $hostTemplate = file_get_contents($filePath);
         $anchor = '    //{{enum-const.component.php.template}}';
@@ -239,7 +255,7 @@ class ComponentsGenerator extends Component implements GeneratorInterface
         return $output;
     }
 
-    private function generateEnumAll($name)
+    private function generateEnumAll()
     {
         $targetDir = Components::$enumDirectory;
         $fileName = 'Components.php';
@@ -251,7 +267,7 @@ class ComponentsGenerator extends Component implements GeneratorInterface
         $output->fileName = $fileName;
 
         $template = file_get_contents(self::$enumAllTemplate);
-        $template = $this->replaceTemplateName($name, $template);
+        $template = $this->replaceTemplateName($template);
 
         $hostTemplate = file_get_contents($filePath);
         $anchor = '    //{{enum-all.component.php.template}}';
@@ -274,15 +290,14 @@ class ComponentsGenerator extends Component implements GeneratorInterface
     }
 
     /**
-     * @param string $name Component name
      * @param string $template Template contents
      * @return string template contents with replacements
      */
-    private function replaceTemplateName($name, $template)
+    private function replaceTemplateName($template)
     {
-        $template = preg_replace('/{{ComponentPascal}}/', $this->nameToPascalCase($name), $template);
-        $template = preg_replace('/{{ComponentCamel}}/', $this->nameToCamelCase($name), $template);
-        $template = preg_replace('/{{ComponentName}}/', $name, $template);
+        $template = preg_replace('/{{ComponentPascal}}/', StringHelper::toPascalCase($this->name), $template);
+        $template = preg_replace('/{{ComponentCamel}}/', StringHelper::toCamelCase($this->name), $template);
+        $template = preg_replace('/{{ComponentName}}/', $this->name, $template);
 
         return $template;
     }
@@ -294,5 +309,16 @@ class ComponentsGenerator extends Component implements GeneratorInterface
             return false;
         }
         return str_replace($anchor, "$content\n$anchor", $hostTemplate);
+    }
+
+    private function concatenateFields()
+    {
+        $baseConfigTemplatePath = self::$generatorTemplatesDir . DIRECTORY_SEPARATOR . $this->type . '.yaml.template';
+        $baseConfig = Yaml::parse(file_get_contents($baseConfigTemplatePath));
+
+        foreach ($this->fields as $i => $field) {
+            $baseConfig['tabs'][0]['fields'][] = $field;
+        }
+        
     }
 }

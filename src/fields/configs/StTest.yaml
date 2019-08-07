@@ -1,0 +1,53 @@
+name: 'ST Test'
+handle: stTest
+instructions: ''
+searchable: 1
+type: verbb\supertable\fields\SuperTableField
+translationMethod: none
+translationKeyFormat: ''
+fieldGroup: 1
+required: true
+settings:
+  fieldLayout: row
+  propagationMethod: none
+  selectionLabel: null
+  minRows: null
+  maxRows: null
+  staticField: 1
+  blockTypes:
+    new:
+      fields:
+        new1:
+          name: 'Link Title'
+          handle: linkTitle
+          instructions: ''
+          searchable: true
+          translationMethod: site
+          translationKeyFormat: null
+          type: craft\fields\PlainText
+          settings:
+            placeholder: ''
+            code: ''
+            multiline: ''
+            initialRows: '2'
+            charLimit: ''
+            columnType: text
+            contentColumnType: text
+            fieldGroup: null
+        new2:
+          name: Url
+          handle: url
+          instructions: ''
+          searchable: true
+          translationMethod: site
+          translationKeyFormat: null
+          type: craft\fields\PlainText
+          settings:
+            placeholder: ''
+            code: ''
+            multiline: ''
+            initialRows: '2'
+            charLimit: ''
+            columnType: text
+            contentColumnType: text
+            fieldGroup: null

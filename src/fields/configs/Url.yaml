@@ -1,0 +1,16 @@
+name: 'Url'
+handle: url
+instructions: ''
+searchable: true
+translationMethod: site
+translationKeyFormat: null
+type: craft\fields\PlainText
+settings:
+  placeholder: ''
+  code: ''
+  multiline: ''
+  initialRows: '2'
+  charLimit: ''
+  columnType: text
+  contentColumnType: text
+  fieldGroup: null

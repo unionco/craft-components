@@ -71,6 +71,9 @@ class Components extends Plugin
     /** @var string */
     public static $enumDirectory = '';
 
+    /** @var string */
+    public static $fieldsConfigDirectory = '';
+
     // Public Properties
     // =========================================================================
 
@@ -104,6 +107,8 @@ class Components extends Plugin
         self::$templatesEmbedDirectory = $this->getBasePath() . '/templates/embed';
         self::$templatesSystemDirectory = $this->getBasePath() . '/templates/system';
         self::$enumDirectory = $this->getBasePath() . '/enum';
+
+        self::$fieldsConfigDirectory = $this->getBasePath() . '/fields/configs';
 
         // Add in our console commands
         if (Craft::$app instanceof ConsoleApplication) {

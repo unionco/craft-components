@@ -1,0 +1,17 @@
+name: '{{FieldName}}'
+handle: '{{FieldHandle}}'
+instructions: '{{FieldInstructions}}'
+searchable: 1
+type: verbb\supertable\fields\SuperTableField
+translationMethod: none
+translationKeyFormat: ''
+fieldGroup: 1
+required: true
+settings:
+  fieldLayout: row
+  propagationMethod: none
+  selectionLabel: 
+  minRows: 
+  maxRows: 
+  staticField: 1
+  blockTypes:
