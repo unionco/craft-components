@@ -21,6 +21,8 @@ abstract class GeneratorController extends Controller
     {
         $output = $this->generator->generate($name, $this->opts);
         [$rows, $warnings, $errors] = $this->outputToRows($output);
+
+        echo $this->ansiFormat(PHP_EOL . 'Output' . PHP_EOL, Console::FG_GREEN);
         echo Table::widget([
             'headers' => ['Action', 'File Name', 'Absolute Path', 'Warnings', 'Errors', 'Success'],
             'rows' => $rows,

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://craftcms.com/
  * @copyright Copyright (c) Pixel & Tonic, Inc.
@@ -34,7 +35,6 @@ abstract class Components
     const LinkList = 'Link List';
     const Reviews = 'Reviews';
     const Tabs = 'Tabs';
-    const FullWidthCallout = 'Full-width Callout'; // Automatically generated
     //{{enum-const.component.php.template}}
 
     const ALL = [
@@ -53,7 +53,6 @@ abstract class Components
         self::Reviews,
         self::SpanningStripe,
         self::Tabs,
-            self::FullWidthCallout, // Automatically generated
-    //{{enum-all.component.php.template}}
+        //{{enum-all.component.php.template}}
     ];
 }

@@ -69,17 +69,17 @@ class FieldController extends GeneratorController
         echo $this->ansiFormat('Preview', Console::FG_GREEN) . PHP_EOL . PHP_EOL;
         
         echo $this->ansiFormat('Field Name:', Console::FG_CYAN) . PHP_EOL;
-        echo "\t$name\n";
+        echo "\t$name" . PHP_EOL . PHP_EOL;
         
         echo $this->ansiFormat('Field Handle:', Console::FG_CYAN) . PHP_EOL;
-        echo "\t" . $this->opts['handle'] . PHP_EOL;
+        echo "\t" . $this->opts['handle'] . PHP_EOL . PHP_EOL;
 
         echo $this->ansiFormat('Field Type:', Console::FG_CYAN) . PHP_EOL;
-        echo "\t" . $this->opts['handle'] . PHP_EOL;
+        echo "\t" . $this->opts['handle'] . PHP_EOL . PHP_EOL;
 
         if ($hasInstructions) {
             echo $this->ansiFormat('Field Instructions:', Console::FG_CYAN) . PHP_EOL;
-            echo "\t" . $this->opts['instructions'] . PHP_EOL;
+            echo "\t" . $this->opts['instructions'] . PHP_EOL . PHP_EOL;
         }
 
         if ($isComplex) {

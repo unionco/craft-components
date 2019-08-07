@@ -35,7 +35,7 @@ class ComponentController extends GeneratorController
         while ($field != 'done') {
             if ($field) {
                 unset($availableFields[$field]);
-                echo "Selected fields:\n";
+                echo $this->ansiFormat("Selected fields", Console::FG_CYAN) . PHP_EOL;
                 $this->opts['fields'][] = $field;
                 foreach ($this->opts['fields'] as $f) {
                     echo "\t$f\n";
@@ -48,10 +48,10 @@ class ComponentController extends GeneratorController
         echo PHP_EOL . PHP_EOL;
         echo $this->ansiFormat('Preview', Console::FG_GREEN) . PHP_EOL . PHP_EOL;
         
-        echo $this->ansiFormat('Component Name:', Console::FG_CYAN) . PHP_EOL;
+        echo $this->ansiFormat('Component Name:', Console::FG_CYAN) . PHP_EOL . PHP_EOL;
         echo "\t$name\n";
 
-        echo $this->ansiFormat('Component Fields:', Console::FG_CYAN) . PHP_EOL;
+        echo $this->ansiFormat('Component Fields:', Console::FG_CYAN) . PHP_EOL . PHP_EOL;
         foreach ($this->opts['fields'] as $field) {
             echo "\t$field\n";
         }
