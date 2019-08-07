@@ -1,0 +1,13 @@
+name: '{{FieldName}}'
+handle: '{{FieldHandle}}'
+instructions: '{{FieldInstructions}}'
+searchable: true
+translationMethod: site
+translationKeyFormat: null
+type: craft\fields\Matrix
+settings:
+  minBlocks: ''
+  maxBlocks: ''
+  contentTable: '{{%matrixcontent_{{FieldHandle}}}}'
+  propagationMethod: none
+  blockTypes:

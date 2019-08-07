@@ -37,7 +37,7 @@ class ComponentsGenerator extends Component implements GeneratorInterface
     public $name = '';
 
     /** @var string */
-    public $type = 'supertable';
+    public $type = 'basic';
 
     /** @var string[] */
     public $fields = [];
@@ -94,17 +94,17 @@ class ComponentsGenerator extends Component implements GeneratorInterface
         $output->absoluteDirectory = $targetDir;
         $output->fileName = $fileName;
        
-        $templatePath = self::$generatorTemplatesDir . DIRECTORY_SEPARATOR . $this->type . '.yaml.template';
-        $template = Yaml::parse(file_get_contents($templatePath));//file_get_contents($)
+        $template = $this->concatenateFields();
+        // $templatePath = self::$generatorTemplatesDir . DIRECTORY_SEPARATOR . $this->type . '.yaml.template';
+        // $template = Yaml::parse(file_get_contents($templatePath));//file_get_contents($)
 
         try {
-            FileHelper::writeToFile($filePath, '');
-            $output->warnings[] = 'Empty YAML file has been generated. You must add your own config to the file before installing the component';
+            FileHelper::writeToFile($filePath, Yaml::dump($template, 20, 2));
             $output->success = true;
         } catch (InvalidArgumentException $e) {
             $output->errors[] = 'Parent directory does not exist';
         } catch (ErrorException $e) {
-            $output->errors[] = 'Generating empty YAML config file failed';
+            $output->errors[] = 'Writing YAML config file failed';
         }
 
         return $output;
@@ -314,11 +314,17 @@ class ComponentsGenerator extends Component implements GeneratorInterface
     private function concatenateFields()
     {
         $baseConfigTemplatePath = self::$generatorTemplatesDir . DIRECTORY_SEPARATOR . $this->type . '.yaml.template';
-        $baseConfig = Yaml::parse(file_get_contents($baseConfigTemplatePath));
+        $baseConfigTemplate = file_get_contents($baseConfigTemplatePath);
+        $baseConfig = Yaml::parse($baseConfigTemplate);
 
-        foreach ($this->fields as $i => $field) {
-            $baseConfig['tabs'][0]['fields'][] = $field;
+        $fieldsDir = Components::$fieldsConfigDirectory;
+        foreach ($this->fields as $i => $fieldPascal) {
+            $fieldTemplatePath = $fieldsDir . DIRECTORY_SEPARATOR . $fieldPascal . '.yaml';
+            $fieldTemplate = file_get_contents($fieldTemplatePath);
+            $fieldData = Yaml::parse($fieldTemplate);
+            $baseConfig['tabs'][0]['fields'][] = $fieldData;
         }
-        
+
+        return $baseConfig;
     }
 }

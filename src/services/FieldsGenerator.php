@@ -159,6 +159,7 @@ class FieldsGenerator extends Component implements GeneratorInterface
             'plainText' => 'Plain Text',
             'lightswitch' => 'Lightswitch',
             'supertable' => 'Super Table',
+            'matrix' => 'Matrix',
         ];
     }
 
