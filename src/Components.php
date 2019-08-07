@@ -11,6 +11,7 @@
 namespace unionco\components;
 
 use Craft;
+use craft\web\View;
 use yii\base\Event;
 use craft\base\Plugin;
 use craft\fields\Assets;
@@ -21,13 +22,13 @@ use craft\services\Plugins;
 use craft\events\FieldEvent;
 use craft\services\Elements;
 use craft\events\PluginEvent;
-use craft\web\View;
-use craft\events\RegisterTemplateRootsEvent;
 use unionco\components\services\Page;
 use craft\events\RegisterUrlRulesEvent;
 use unionco\components\models\Settings;
 use unionco\components\services\Manager;
+use unionco\components\services\Generator;
 use craft\web\twig\variables\CraftVariable;
+use craft\events\RegisterTemplateRootsEvent;
 use unionco\components\helpers\ConfigHelper;
 use craft\events\RegisterComponentTypesEvent;
 use craft\console\Application as ConsoleApplication;
@@ -53,6 +54,18 @@ class Components extends Plugin
      * @var Components
      */
     public static $plugin;
+
+    /** @var string */
+    public static $componentsConfigDirectory = '';
+
+    /** @var string */
+    public static $componentsClassDirectory = '';
+
+    /** @var string */
+    public static $templatesEmbedDirectory = '';
+
+    /** @var string */
+    public static $templatesSystemDirectory = '';
 
     // Public Properties
     // =========================================================================
@@ -82,6 +95,10 @@ class Components extends Plugin
     {
         parent::init();
         self::$plugin = $this;
+        self::$componentsConfigDirectory = $this->getBasePath() . '/components/configs';
+        self::$componentsClassDirectory = $this->getBasePath() . '/components';
+        self::$templatesEmbedDirectory = $this->getBasePath() . '/templates/embed';
+        self::$templatesSystemDirectory = $this->getBasePath() . '/templates/system';
 
         // Add in our console commands
         if (Craft::$app instanceof ConsoleApplication) {
@@ -94,7 +111,8 @@ class Components extends Plugin
 
         $this->setComponents([
             'manager' => Manager::class,
-            'page' => Page::class
+            'page' => Page::class,
+            'generator' => Generator::class,
         ]);
         
         // Base template directory
