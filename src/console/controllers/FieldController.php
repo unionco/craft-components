@@ -24,7 +24,7 @@ class FieldController extends GeneratorController
         echo PHP_EOL;
 
         // Field Type
-        $this->opts['type'] = $this->select("Select a field type: ", FieldsGenerator::fieldTypes());
+        $this->opts['type'] = $this->select("Select a field type: ", FieldsGenerator::$fieldTypes);
 
         // See if a custom generator exists for this field type
         try {

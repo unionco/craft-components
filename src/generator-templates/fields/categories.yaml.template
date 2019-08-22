@@ -1,0 +1,21 @@
+name: '{{FieldName}}'
+handle: {{FieldHandle}}
+instructions: '{{FieldInstructions}}'
+searchable: true
+translationMethod: site
+translationKeyFormat: null
+type: craft\fields\Categories
+settings:
+  allowLimit: false
+  allowMultipleSources: false
+  branchLimit: ''
+  sources: '*'
+  source: '{{FieldSource}}'
+  targetSiteId: null
+  viewMode: null
+  limit: null
+  selectionLabel: ''
+  localizeRelations: false
+  validateRelatedElements: ''
+contentColumnType: string
+fieldGroup: 

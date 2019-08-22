@@ -18,6 +18,22 @@ class FieldsGenerator extends Component implements GeneratorInterface
     /** @var FieldPrompt[] */
     public static $prompts = [];
 
+    public static $fieldTypes = [
+        'categories' => 'Categories',
+        'dateTime' => 'DateTime',
+        'email' => 'Email',
+        'entries' => 'Entries',
+        'imageAsset' => 'ImageAsset',
+        'lightswitch' => 'Lightswitch',
+        'matrix' => 'Matrix',
+        'number' => 'Number',
+        'pdfAsset' => 'PdfAsset',
+        'plainText' => 'Plain Text',
+        'supertable' => 'Super Table',
+        'tags' => 'Tags',
+        'url' => 'Url',
+    ];
+
     /** @var string */
     public $name = '';
 
@@ -127,23 +143,6 @@ class FieldsGenerator extends Component implements GeneratorInterface
         $template = preg_replace('/{{FieldInstructions}}/', $this->values['instructions'], $template);
 
         return $template;
-    }
-
-    public static function fieldTypes()
-    {
-        return [
-            'dateTime' => 'DateTime',
-            'email' => 'Email',
-            'entries' => 'Entries',
-            'imageAsset' => 'ImageAsset',
-            'lightswitch' => 'Lightswitch',
-            'matrix' => 'Matrix',
-            'number' => 'Number',
-            'pdfAsset' => 'PdfAsset',
-            'plainText' => 'Plain Text',
-            'supertable' => 'Super Table',
-            'url' => 'Url',
-        ];
     }
 
     public static function getFields()

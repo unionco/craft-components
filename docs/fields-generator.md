@@ -57,7 +57,7 @@ Proceed? (yes|no) [no]:
 | Type | Available | Will Implement? |
 |---|---|---|
 | Assets | :heavy_check_mark: | :heavy_check_mark: |
-| Categories | | heavy_check_mark: |
+| Categories | :heavy_check_mark: | heavy_check_mark: |
 | Checkboxes | | |
 | Color | | |
 | Date/Time | | :heavy_check_mark: |
@@ -70,7 +70,7 @@ Proceed? (yes|no) [no]:
 | Plain Text | :heavy_check_mark: | :heavy_check_mark: |
 | Radio Buttons | | |
 | Table | | |
-| Tags | | heavy_check_mark: |
+| Tags | :heavy_check_mark: | heavy_check_mark: |
 | URL | :heavy_check_mark: | :heavy_check_mark: |
 | Users | | |
 
