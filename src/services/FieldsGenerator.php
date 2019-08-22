@@ -32,6 +32,7 @@ class FieldsGenerator extends Component implements GeneratorInterface
         'supertable' => 'Super Table',
         'tags' => 'Tags',
         'url' => 'Url',
+        'users' => 'Users',
     ];
 
     /** @var string */

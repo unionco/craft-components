@@ -72,7 +72,7 @@ Proceed? (yes|no) [no]:
 | Table | | |
 | Tags | :heavy_check_mark: | heavy_check_mark: |
 | URL | :heavy_check_mark: | :heavy_check_mark: |
-| Users | | |
+| Users | :heavy_check_mark: | :heavy_check_mark: |
 
 ### Plugin Field Types
 | Type | Available | Will Implement? |

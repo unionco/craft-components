@@ -1,0 +1,19 @@
+name: 'Related Users'
+handle: relatedUsers
+instructions: ''
+searchable: true
+translationMethod: site
+translationKeyFormat: null
+type: craft\fields\Entries
+settings:
+  sources: 
+  - 'group:10942228-e351-4009-b2d9-c3496e684008'
+  source: null
+  targetSiteId: null
+  viewMode: null
+  limit: '4'
+  selectionLabel: ''
+  localizeRelations: false
+  validateRelatedElements: ''
+contentColumnType: string
+fieldGroup: null

@@ -1,0 +1,18 @@
+name: '{{FieldName}}'
+handle: {{FieldHandle}}
+instructions: '{{FieldInstructions}}
+searchable: true
+translationMethod: site
+translationKeyFormat: null
+type: craft\fields\Users
+settings:
+    sources: {{FieldSources}}
+    source: null
+    targetSiteId: null
+    viewMode: null
+    limit: '{{FieldLimit}}'
+    selectionLabel: ''
+    localizeRelations: false
+    validateRelatedElements: ''
+contentColumnType: string
+fieldGroup: null 

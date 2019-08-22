@@ -6,7 +6,7 @@ use Craft;
 use unionco\components\models\FieldPrompt;
 use unionco\components\services\FieldsGenerator;
 
-class EntriesFieldGenerator extends FieldsGenerator
+class UsersFieldGenerator extends FieldsGenerator
 {
     /** @inheritdoc */
     public function init()
@@ -20,12 +20,14 @@ class EntriesFieldGenerator extends FieldsGenerator
                 'handle' => 'sources',
                 'multi' => true,
                 'options' => function () {
-                    $sections = Craft::$app->getSections()->getAllSections();
+                    $groups = Craft::$app->getUserGroups()->getAllGroups();
                     $sources = [
                         'all' => '*',
+                        'admins' => 'admins',
                     ];
-                    foreach ($sections as $section) {
-                        $sources[$section->handle] = "section:$section->uid";
+                    foreach ($groups as $group) {
+
+                        $sources[$group->handle] = "section:{$group->uid}";
                     }
                     return $sources;
                 },
@@ -38,15 +40,15 @@ class EntriesFieldGenerator extends FieldsGenerator
                         return "'*'";
                     }
                     $output = '';
-                    foreach ($val as $sectionHandle) {
-                        $section = Craft::$app->getSections()->getSectionByHandle($sectionHandle);
-                        $output .= "\n  - 'section:{$section->uid}'";
+                    foreach ($val as $groupHandle) {
+                        $group = Craft::$app->getUserGroups()->getGroupByHandle($groupHandle);
+                        $output .= "\n  - 'group:{$group->uid}'";
                     }
                     return $output;
                 },
             ]),
             new FieldPrompt([
-                'prompt' => 'Limit number of entries',
+                'prompt' => 'Limit number of users',
                 'handle' => 'limit',
             ]),
         ]);
@@ -62,3 +64,6 @@ class EntriesFieldGenerator extends FieldsGenerator
         return $template;
     }
 }
+
+// - admins
+// - 'group:10942228-e351-4009-b2d9-c3496e684008'
