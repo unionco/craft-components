@@ -54,7 +54,7 @@ Proceed? (yes|no) [no]:
 ```
 
 ### Field Types
-| Type | Available | Will Implement?
+| Type | Available | Will Implement? |
 |---|---|---|
 | Assets | | :heavy_check_mark: |
 | Categories | | |
@@ -69,8 +69,13 @@ Proceed? (yes|no) [no]:
 | Number | | :heavy_check_mark: |
 | Plain Text | :heavy_check_mark: | :heavy_check_mark: |
 | Radio Buttons | | |
-| SuperTable | :heavy_check_mark: | :heavy_check_mark: |
 | Table | | |
 | Tags | | |
 | URL | | :heavy_check_mark: |
 | Users | | |
+
+### Plugin Field Types
+| Type | Available | Will Implement? |
+|---|---|---|
+| LinkIt | | :heavy_check_mark: |
+| SuperTable | :heavy_check_mark: | :heavy_check_mark: |
