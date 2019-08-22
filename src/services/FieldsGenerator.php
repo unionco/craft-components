@@ -7,6 +7,7 @@ use craft\helpers\FileHelper;
 use craft\helpers\StringHelper;
 use Symfony\Component\Yaml\Yaml;
 use unionco\components\Components;
+use unionco\components\models\FieldPrompt;
 use unionco\components\models\GeneratorOutput;
 use unionco\components\services\GeneratorInterface;
 
@@ -15,11 +16,14 @@ class FieldsGenerator extends Component implements GeneratorInterface
     /** @var string */
     public static $generatorTemplatesDir = '';
 
+    /** @var FieldPrompt[] */
+    public static $prompts = [];
+
     /** @var string */
     public $name = '';
 
     /** @var string */
-    public $type = '';
+    public $type = 'base';
 
     /** @var string */
     public $handle = '';
@@ -27,58 +31,79 @@ class FieldsGenerator extends Component implements GeneratorInterface
     /** @var string */
     public $instructions = '';
 
-    /** @var string[] */
-    public $subFields = [];
+    /** @var array */
+    public $values = [];
 
-    /** @return void */
+    /** @inheritdoc */
     public function init()
     {
+        // Set dynamic static properties
         self::$generatorTemplatesDir = Components::$plugin->getBasePath() . '/generator-templates/fields';
+
+        static::$prompts = [
+            $name = new FieldPrompt([
+                'prompt' => 'Enter a name for the field',
+                'handle' => 'name',
+                'required' => true,
+            ]),
+            new FieldPrompt([
+                'prompt' => 'Enter a handle for the field',
+                'handle' => 'handle',
+                'required' => true,
+                'default' => function () use ($name) {
+                    return StringHelper::toCamelCase($name->getValue());
+                },
+            ]),
+            new FieldPrompt([
+                'prompt' => 'Instructions',
+                'handle' => 'instructions',
+            ]),
+        ];
+
         parent::init();
     }
 
     /**
      * Generate scaffolding for a new field
-     * @param string $name
      * @param array $opts
      * @return GeneratorOutput[]
      **/
-    public function generate($name, $opts = []): array
+    public function generate($opts = []): array
     {
-        $this->name = $name;
-        $this->handle = $opts['handle'] ?? '';
-        $this->type = $opts['type'] ?? '';
-        $this->instructions = $opts['instructions'] ?? '';
-        $this->subFields = $opts['subFields'] ?? [];
+        // $this->name = $name;
+        // $this->handle = $opts['handle'] ?? '';
+        // $this->type = $opts['type'] ?? '';
+        // $this->instructions = $opts['instructions'] ?? '';
+        // $this->subFields = $opts['subFields'] ?? [];
+        // $this->values = $opts['values'] ?? [];
+        $this->values = $opts['values'];
 
         /** @var GeneratorOuput[] */
-        $output = [];
-        if ($this->type === 'supertable' || $this->type === 'matrix') {
-            $output[] = $this->generateComplexConfigYaml();
-        } else {
-            $output[] = $this->generateConfigYaml();
-        }
+        $output = [$this->generateConfigYaml()];
 
         return $output;
     }
 
     public function generateConfigYaml()
     {
+        /** @var string */
+        $name = $this->values['name'];
+
         $targetDir = Components::$fieldsConfigDirectory;
-        $pascalCase = StringHelper::toPascalCase($this->name);
+        $pascalCase = StringHelper::toPascalCase($name);
         $fileName = $pascalCase . '.yaml';
         $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
-        
+
         $output = new GeneratorOutput();
         $output->action = 'Create field config YAML';
         $output->absoluteDirectory = $targetDir;
         $output->fileName = $fileName;
-        
+
         $templatePath = self::$generatorTemplatesDir . DIRECTORY_SEPARATOR . $this->type . '.yaml.template';
         if (!file_exists($templatePath)) {
             $output->errors[] = "Template for {$this->type} fields does not exist. Tried {$templatePath}";
         }
-        
+
         $template = file_get_contents($templatePath);
         $template = $this->replaceTemplateName($template);
 
@@ -95,60 +120,16 @@ class FieldsGenerator extends Component implements GeneratorInterface
         return $output;
     }
 
-    private function generateComplexConfigYaml()
-    {
-        $targetDir = Components::$fieldsConfigDirectory;
-        $pascalCase = StringHelper::toPascalCase($this->name);
-        $fileName = $pascalCase . '.yaml';
-        $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
-        
-        $output = new GeneratorOutput();
-        $output->action = 'Create field complex config YAML';
-        $output->absoluteDirectory = $targetDir;
-        $output->fileName = $fileName;
-        
-        $templatePath = self::$generatorTemplatesDir . DIRECTORY_SEPARATOR . $this->type . '.yaml.template';
-        if (!file_exists($templatePath)) {
-            $output->errors[] = "Template for {$this->type} fields does not exist. Tried {$templatePath}";
-        }
-        
-        $template = file_get_contents($templatePath);
-        $template = $this->replaceTemplateName($template);
-        $baseTemplateData = Yaml::parse($template);
-
-        // Handle subfields
-        $i = 1;
-        foreach ($this->subFields as $subField) {
-            $subTemplatePath = $targetDir . DIRECTORY_SEPARATOR . $subField . '.yaml';
-            $subTemplate = file_get_contents($subTemplatePath);
-            $subTemplateData = Yaml::parse($subTemplate);
-            $baseTemplateData['settings']['blockTypes']['new']['fields']['new' . $i] = $subTemplateData;
-            $i++;
-        }
-
-        // Write that shit
-        try {
-            FileHelper::writeToFile($filePath, Yaml::dump($baseTemplateData, 20, 2));
-            // $output->warnings[] = 'Empty YAML file has been generated. You must add your own config to the file before installing the component';
-            $output->success = true;
-        } catch (InvalidArgumentException $e) {
-            $output->errors[] = 'Parent directory does not exist';
-        } catch (ErrorException $e) {
-            $output->errors[] = 'Generating field YAML config file failed';
-        }
-
-        return $output;
-    }
 
     /**
      * @param string $template Template contents
      * @return string template contents with replacements
      */
-    private function replaceTemplateName($template)
+    protected function replaceTemplateName($template)
     {
-        $template = preg_replace('/{{FieldName}}/', $this->name, $template);
-        $template = preg_replace('/{{FieldHandle}}/', $this->handle, $template);
-        $template = preg_replace('/{{FieldInstructions}}/', $this->instructions, $template);
+        $template = preg_replace('/{{FieldName}}/', $this->values['name'], $template);
+        $template = preg_replace('/{{FieldHandle}}/', $this->values['handle'], $template);
+        $template = preg_replace('/{{FieldInstructions}}/', $this->values['instructions'], $template);
 
         return $template;
     }
@@ -156,10 +137,13 @@ class FieldsGenerator extends Component implements GeneratorInterface
     public static function fieldTypes()
     {
         return [
-            'plainText' => 'Plain Text',
+            'imageAsset' => 'ImageAsset',
             'lightswitch' => 'Lightswitch',
-            'supertable' => 'Super Table',
             'matrix' => 'Matrix',
+            'pdfAsset' => 'PdfAsset',
+            'plainText' => 'Plain Text',
+            'supertable' => 'Super Table',
+
         ];
     }
 
@@ -189,10 +173,5 @@ class FieldsGenerator extends Component implements GeneratorInterface
             default:
                 return false;
         }
-    }
-
-    public static function isComplex($fieldType): bool
-    {
-        return $fieldType === 'supertable' || $fieldType === 'matrix';
     }
 }

@@ -4,5 +4,6 @@ namespace unionco\components\services;
 
 interface GeneratorInterface
 {
-    public function generate($name, $opts = []): array;
+    public function generate($opts = []): array;
+    
 }

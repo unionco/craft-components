@@ -1,0 +1,27 @@
+name: '{{FieldName}}'
+handle: '{{FieldHandle}}'
+instructions: '{{FieldInstructions}}'
+searchable: true
+translationMethod: site
+translationKeyFormat: null
+type: craft\fields\Assets
+settings:
+  useSingleFolder: '1'
+  defaultUploadLocationSource: '{{FieldVolume}}'
+  defaultUploadLocationSubpath: '{{FieldPath}}'
+  singleUploadLocationSource: '{{FieldVolume}}'
+  singleUploadLocationSubpath: '{{FieldPath}}'
+  restrictFiles: '1'
+  allowedKinds:
+  - {{FieldAssetType}}
+  sources:
+  - '{{FieldVolume}}'
+  source: null
+  targetSiteId: null
+  viewMode: large
+  limit: '{{FieldLimit}}'
+  selectionLabel: ''
+  localizeRelations: false
+  validateRelatedElements: ''
+contentColumnType: string
+fieldGroup: null 

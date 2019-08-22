@@ -8,85 +8,88 @@ use unionco\components\Components;
 use unionco\components\services\FieldsGenerator;
 use unionco\components\console\controllers\GeneratorController;
 use craft\helpers\Console;
+use ReflectionClass;
 
 class FieldController extends GeneratorController
 {
     public function init()
     {
-        $this->generator = Components::$plugin->fieldsGenerator;
+        $this->generator = null; //Components::$plugin->fieldsGenerator;
         parent::init();
+    }
+
+    /**
+     * Extends the yii select method to allow multiple selections
+     */
+    public function multi($prompt, $options)
+    {
+        $values = [];
+        $available = $options;
+        $selection = null;
+        while ($selection != 'done') {
+            if ($selection) {
+                unset($available[$selection]);
+                echo "Selected:\n";
+                $values[] = $selection;
+                foreach ($values as $value) {
+                    echo "\t$value\n";
+                }
+            }
+
+            $selection = $this->select(
+                $prompt,
+                array_merge($available, ['done' => 'Finished'])
+            );
+        }
+        return $values;
     }
 
     public function actionGenerate(string $name = null)
     {
         echo $this->ansiFormat('Field Generator', Console::FG_GREEN);
         echo PHP_EOL;
-        
-        $this->opts = [];
-        if (!$name) {
-            $name = $this->prompt("Give the field a name: ", [
-                'required' => true,
-            ]);
-        }
-
-        // Field Handle
-        $this->opts['handle'] = $this->prompt('Give the field a handle: ', [
-            'required' => true,
-            'default' => StringHelper::toCamelCase($name),
-        ]);
 
         // Field Type
         $this->opts['type'] = $this->select("Select a field type: ", FieldsGenerator::fieldTypes());
 
-        // Field Instructions
-        $hasInstructions = FieldsGenerator::hasInstructions($this->opts['type']);
-        if ($hasInstructions) {
-            $this->opts['instructions'] = $this->prompt("Instructions for field: ");
+        // See if a custom generator exists for this field type
+        try {
+            $fieldGeneratorClassName = '\\unionco\\components\\services\\fields\\' . ucFirst($this->opts["type"]) . 'FieldGenerator';
+            $fieldGeneratorClass = new ReflectionClass($fieldGeneratorClassName);
+            $this->generator = $fieldGeneratorClass->newInstance();
+            $prompts = $this->generator::$prompts;
+            // var_dump($methods); die;
+
+        } catch (\Throwable $e) {
+            var_dump($e);
+            die;
         }
 
-        $isComplex = FieldsGenerator::isComplex($this->opts['type']);
-        if ($isComplex) {
-            $availableFields = FieldsGenerator::getFields();
-            $this->opts['subFields'] = [];
-            $field = null;
-            while ($field != 'done') {
-                if ($field) {
-                    unset($availableFields[$field]);
-                    echo "Selected fields:\n";
-                    $this->opts['subFields'][] = $field;
-                    foreach ($this->opts['subFields'] as $f) {
-                        echo "\t$f\n";
-                    }
+        foreach ($prompts as $prompt) {
+            $options = $prompt->getOptions();
+            $value = null;
+            if ($options) {
+                if ($prompt->getMulti()) {
+                    $value = $this->multi($prompt->getPrompt(), $options());
+                } else {
+                    $value = $this->select($prompt->getPrompt(), $options());
                 }
-    
-                $field = $this->select(
-                    'Add fields: ',
-                    array_merge($availableFields, ['done' => 'Finished adding sub-fields'])
-                );
+            } else {
+                $value = $this->prompt($prompt->getPrompt(), [
+                    'required' => $prompt->getRequired(),
+                    'default' => $prompt->getDefault(),
+                ]);
             }
+            $prompt->setValue($value);
+            $this->opts['values'][$prompt->getHandle()] = $prompt->getValue();
         }
+
         echo PHP_EOL . PHP_EOL;
         echo $this->ansiFormat('Preview', Console::FG_GREEN) . PHP_EOL . PHP_EOL;
-        
-        echo $this->ansiFormat('Field Name:', Console::FG_CYAN) . PHP_EOL;
-        echo "\t$name" . PHP_EOL . PHP_EOL;
-        
-        echo $this->ansiFormat('Field Handle:', Console::FG_CYAN) . PHP_EOL;
-        echo "\t" . $this->opts['handle'] . PHP_EOL . PHP_EOL;
 
-        echo $this->ansiFormat('Field Type:', Console::FG_CYAN) . PHP_EOL;
-        echo "\t" . $this->opts['handle'] . PHP_EOL . PHP_EOL;
-
-        if ($hasInstructions) {
-            echo $this->ansiFormat('Field Instructions:', Console::FG_CYAN) . PHP_EOL;
-            echo "\t" . $this->opts['instructions'] . PHP_EOL . PHP_EOL;
-        }
-
-        if ($isComplex) {
-            echo $this->ansiFormat('Sub-Fields:', Console::FG_CYAN) . PHP_EOL;
-            foreach ($this->opts['subFields'] as $sub) {
-                echo "\t$sub\n";
-            }
+        foreach ($this->generator::$prompts as $prompt) {
+            echo $this->ansiFormat($prompt->getPrompt(), Console::FG_CYAN) . PHP_EOL;
+            echo "\t" . $prompt->getValue() . PHP_EOL . PHP_EOL;
         }
 
         echo PHP_EOL . PHP_EOL;
@@ -94,6 +97,6 @@ class FieldController extends GeneratorController
             exit(1);
         }
 
-        parent::actionGenerate($name);
+        parent::actionGenerate();
     }
 }

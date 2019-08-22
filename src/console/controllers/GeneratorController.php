@@ -13,13 +13,18 @@ abstract class GeneratorController extends Controller
     protected $generator;
     protected $generateMethod;
 
-    public function init() {
+    /** @inheritdoc */
+    public function init()
+    {
         parent::init();
+        $this->opts = [
+            'values' => [],
+        ];
     }
 
-    public function actionGenerate(string $name)
+    public function actionGenerate(string $name = '')
     {
-        $output = $this->generator->generate($name, $this->opts);
+        $output = $this->generator->generate($this->opts);
         [$rows, $warnings, $errors] = $this->outputToRows($output);
 
         echo $this->ansiFormat(PHP_EOL . 'Output' . PHP_EOL, Console::FG_GREEN);
