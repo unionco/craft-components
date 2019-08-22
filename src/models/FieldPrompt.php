@@ -18,18 +18,8 @@ class FieldPrompt
     public $transform;
 
     public function __construct($opts)
-    // $prompt, $handle, $templateSymbol = null, $required = false, $default = null, $options = null)
     {
         Craft::configure($this, $opts);
-        // $this->prompt = $opts['prompt'];
-        // $this->handle = $opts['handle'];
-        // $this->templateSymbol = $opts['templateSymbol'] ?? null;
-        // $this->default = $opts['default'] ?? null;
-        // $this->required = $opts['required'] ?? false;
-        // $this->value = $opts['value'] ?? null;
-        // $this->options = $opts['options'] ?? [];
-        // $this->multi = $opts['multi'] ?? false;
-        // $this->transform = 
     }
 
     public function getPrompt()

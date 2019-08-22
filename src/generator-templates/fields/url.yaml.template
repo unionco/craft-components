@@ -1,0 +1,12 @@
+name: '{{FieldName}}'
+handle: '{{FieldHandle}}'
+instructions: '{{FieldInstructions}}'
+searchable: true
+translationMethod: none
+translationKeyFormat: null
+type: craft\fields\Url
+settings:
+  placeholder: ''
+  maxLength: '255'
+contentColumnType: string(255)
+fieldGroup: null 

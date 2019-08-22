@@ -22,7 +22,33 @@ abstract class GeneratorController extends Controller
         ];
     }
 
-    public function actionGenerate(string $name = '')
+    /**
+     * Extends the yii select method to allow multiple selections
+     */
+    public function multi($prompt, $options)
+    {
+        $values = [];
+        $available = $options;
+        $selection = null;
+        while ($selection != 'done') {
+            if ($selection) {
+                unset($available[$selection]);
+                echo "Selected:\n";
+                $values[] = $selection;
+                foreach ($values as $value) {
+                    echo "\t$value\n";
+                }
+            }
+
+            $selection = $this->select(
+                $prompt,
+                array_merge($available, ['done' => 'Finished'])
+            );
+        }
+        return $values;
+    }
+
+    public function actionGenerate()
     {
         $output = $this->generator->generate($this->opts);
         [$rows, $warnings, $errors] = $this->outputToRows($output);

@@ -35,6 +35,7 @@ abstract class Components
     const LinkList = 'Link List';
     const Reviews = 'Reviews';
     const Tabs = 'Tabs';
+New Component
     //{{enum-const.component.php.template}}
 
     const ALL = [
@@ -53,6 +54,7 @@ abstract class Components
         self::Reviews,
         self::SpanningStripe,
         self::Tabs,
-        //{{enum-all.component.php.template}}
+            self::NewComponent, // Automatically generated
+    //{{enum-all.component.php.template}}
     ];
 }

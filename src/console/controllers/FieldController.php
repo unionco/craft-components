@@ -18,32 +18,6 @@ class FieldController extends GeneratorController
         parent::init();
     }
 
-    /**
-     * Extends the yii select method to allow multiple selections
-     */
-    public function multi($prompt, $options)
-    {
-        $values = [];
-        $available = $options;
-        $selection = null;
-        while ($selection != 'done') {
-            if ($selection) {
-                unset($available[$selection]);
-                echo "Selected:\n";
-                $values[] = $selection;
-                foreach ($values as $value) {
-                    echo "\t$value\n";
-                }
-            }
-
-            $selection = $this->select(
-                $prompt,
-                array_merge($available, ['done' => 'Finished'])
-            );
-        }
-        return $values;
-    }
-
     public function actionGenerate(string $name = null)
     {
         echo $this->ansiFormat('Field Generator', Console::FG_GREEN);
@@ -65,6 +39,7 @@ class FieldController extends GeneratorController
             die;
         }
 
+        // Loop through the generator's prompts and show the appropriate console interface
         foreach ($prompts as $prompt) {
             $options = $prompt->getOptions();
             $value = null;
@@ -89,7 +64,14 @@ class FieldController extends GeneratorController
 
         foreach ($this->generator::$prompts as $prompt) {
             echo $this->ansiFormat($prompt->getPrompt(), Console::FG_CYAN) . PHP_EOL;
-            echo "\t" . $prompt->getValue() . PHP_EOL . PHP_EOL;
+            $val = $prompt->getValue();
+            if (is_array($val)) {
+                foreach ($val as $line) {
+                    echo "\t$line\n";
+                }
+            } else {
+                echo "\t" . $val . PHP_EOL . PHP_EOL;
+            }
         }
 
         echo PHP_EOL . PHP_EOL;

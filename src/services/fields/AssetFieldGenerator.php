@@ -53,7 +53,7 @@ abstract class AssetFieldGenerator extends FieldsGenerator
     /**
      * @inheritdoc
      */
-    protected function replaceTemplateName($template)
+    public function replaceTemplateName($template): string
     {
         // var_dump($this->values); die;
         $template = parent::replaceTemplateName($template);

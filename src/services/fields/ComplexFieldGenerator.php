@@ -2,7 +2,14 @@
 
 namespace unionco\components\services\fields;
 
+use ErrorException;
+use craft\helpers\FileHelper;
+use InvalidArgumentException;
+use craft\helpers\StringHelper;
+use Symfony\Component\Yaml\Yaml;
+use unionco\components\Components;
 use unionco\components\models\FieldPrompt;
+use unionco\components\models\GeneratorOutput;
 use unionco\components\services\FieldsGenerator;
 
 abstract class ComplexFieldGenerator extends FieldsGenerator
@@ -15,7 +22,9 @@ abstract class ComplexFieldGenerator extends FieldsGenerator
     /** @inheritdoc */
     public function init()
     {
-        $this->availableFields = FieldsGenerator::getFields();
+        parent::init();
+        $this->type = 'matrix';
+
         static::$prompts = array_merge(static::$prompts, [
             new FieldPrompt([
                 'prompt' => 'Select subfields',
@@ -31,12 +40,7 @@ abstract class ComplexFieldGenerator extends FieldsGenerator
     /** @inheritdoc */
     public function generate($opts = []): array
     {
-        // $this->name = $opts['values']['name'];
-        // $this->handle = $opts['values']['handle'] ?? '';
-        // $this->type = $opts['values']['type'] ?? '';
-        // $this->instructions = $opts['instructions'] ?? '';
-        // $this->subFields = $opts['subFields'] ?? [];
-        // $this->values = $opts['values'] ?? [];
+        $this->values = $opts['values'];
 
         $output = [$this->generateConfigYaml()];
         return $output;
@@ -45,39 +49,30 @@ abstract class ComplexFieldGenerator extends FieldsGenerator
     public function generateConfigYaml()
     {
         /** @var string|null */
-        $name = null;
-        foreach (static::$prompts as $prompt) {
-            if ($prompt->getHandle() === 'name') {
-                $name = $prompt->getValue();
-                break;
-            }
-        }
-        if (!$name) {
-            throw new \Exception('wtf');
-        }
+        $name = $this->values['name'];
 
         $targetDir = Components::$fieldsConfigDirectory;
-        $pascalCase = StringHelper::toPascalCase($this->name);
+        $pascalCase = StringHelper::toPascalCase($name);
         $fileName = $pascalCase . '.yaml';
         $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
-        
+
         $output = new GeneratorOutput();
         $output->action = 'Create field complex config YAML';
         $output->absoluteDirectory = $targetDir;
         $output->fileName = $fileName;
-        
+
         $templatePath = self::$generatorTemplatesDir . DIRECTORY_SEPARATOR . $this->type . '.yaml.template';
         if (!file_exists($templatePath)) {
             $output->errors[] = "Template for {$this->type} fields does not exist. Tried {$templatePath}";
         }
-        
+
         $template = file_get_contents($templatePath);
         $template = $this->replaceTemplateName($template);
         $baseTemplateData = Yaml::parse($template);
 
         // Handle subfields
         $i = 1;
-        foreach ($this->subFields as $subField) {
+        foreach ($this->values['subfields'] as $subField) {
             $subTemplatePath = $targetDir . DIRECTORY_SEPARATOR . $subField . '.yaml';
             $subTemplate = file_get_contents($subTemplatePath);
             $subTemplateData = Yaml::parse($subTemplate);

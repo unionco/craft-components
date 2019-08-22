@@ -1,0 +1,11 @@
+name: '{{FieldName}}'
+handle: '{{FieldHandle}}'
+instructions: '{{FieldInstructions}}'
+searchable: true
+translationMethod: none
+translationKeyFormat: null
+type: craft\fields\Email
+settings:
+  placeholder: ''
+contentColumnType: string
+fieldGroup: null 

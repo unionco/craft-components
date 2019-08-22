@@ -5,7 +5,6 @@ namespace unionco\components\services;
 use craft\base\Component;
 use craft\helpers\FileHelper;
 use craft\helpers\StringHelper;
-use Symfony\Component\Yaml\Yaml;
 use unionco\components\Components;
 use unionco\components\models\FieldPrompt;
 use unionco\components\models\GeneratorOutput;
@@ -70,12 +69,6 @@ class FieldsGenerator extends Component implements GeneratorInterface
      **/
     public function generate($opts = []): array
     {
-        // $this->name = $name;
-        // $this->handle = $opts['handle'] ?? '';
-        // $this->type = $opts['type'] ?? '';
-        // $this->instructions = $opts['instructions'] ?? '';
-        // $this->subFields = $opts['subFields'] ?? [];
-        // $this->values = $opts['values'] ?? [];
         $this->values = $opts['values'];
 
         /** @var GeneratorOuput[] */
@@ -122,10 +115,12 @@ class FieldsGenerator extends Component implements GeneratorInterface
 
 
     /**
+     * Replace variables in the template, returning a string template
+     * 
      * @param string $template Template contents
      * @return string template contents with replacements
      */
-    protected function replaceTemplateName($template)
+    public function replaceTemplateName($template): string
     {
         $template = preg_replace('/{{FieldName}}/', $this->values['name'], $template);
         $template = preg_replace('/{{FieldHandle}}/', $this->values['handle'], $template);
@@ -137,13 +132,16 @@ class FieldsGenerator extends Component implements GeneratorInterface
     public static function fieldTypes()
     {
         return [
+            'email' => 'Email',
+            'entries' => 'Entries',
             'imageAsset' => 'ImageAsset',
             'lightswitch' => 'Lightswitch',
             'matrix' => 'Matrix',
+            'number' => 'Number',
             'pdfAsset' => 'PdfAsset',
             'plainText' => 'Plain Text',
             'supertable' => 'Super Table',
-
+            'url' => 'Url',
         ];
     }
 

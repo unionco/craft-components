@@ -56,22 +56,22 @@ Proceed? (yes|no) [no]:
 ### Field Types
 | Type | Available | Will Implement? |
 |---|---|---|
-| Assets | | :heavy_check_mark: |
+| Assets | :heavy_check_mark: | :heavy_check_mark: |
 | Categories | | |
 | Checkboxes | | |
 | Color | | |
 | Date/Time | | :heavy_check_mark: |
-| Email | | :heavy_check_mark: |
-| Entries | | :heavy_check_mark: |
+| Email | :heavy_check_mark: | :heavy_check_mark: |
+| Entries | heavy_check_mark: | :heavy_check_mark: |
 | Lightswitch | :heavy_check_mark: | :heavy_check_mark: |
 | Matrix | :heavy_check_mark: | :heavy_check_mark: |
 | Multi-select | | |
-| Number | | :heavy_check_mark: |
+| Number | :heavy_check_mark: | :heavy_check_mark: |
 | Plain Text | :heavy_check_mark: | :heavy_check_mark: |
 | Radio Buttons | | |
 | Table | | |
 | Tags | | |
-| URL | | :heavy_check_mark: |
+| URL | :heavy_check_mark: | :heavy_check_mark: |
 | Users | | |
 
 ### Plugin Field Types

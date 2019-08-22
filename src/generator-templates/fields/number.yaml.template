@@ -1,0 +1,17 @@
+name: '{{FieldName}}'
+handle: {{FieldHandle}}
+instructions: '{{FieldInstructions}}'
+searchable: true
+translationMethod: none
+translationKeyFormat: null
+type: craft\fields\Number
+settings:
+  defaultValue: '{{FieldDefault}}'
+  min: '{{FieldMin}}'
+  max: '{{FieldMax}}'
+  decimals: {{FieldDecimals}}
+  size: null
+  prefix: ''
+  suffix: ''
+contentColumnType: integer(10)
+fieldGroup: null

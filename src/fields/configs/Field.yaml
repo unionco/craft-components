@@ -1,0 +1,20 @@
+name: 'Field'
+handle: field
+instructions: ''
+searchable: true
+translationMethod: site
+translationKeyFormat: null
+type: craft\fields\Entries
+settings:
+  sources: 
+  - 'section:40faaf2e-7776-4b35-95f5-dca5b9fd3626'
+  - 'section:95c63c20-22e7-47cb-a6c2-1d1bc2450f2c'
+  source: null
+  targetSiteId: null
+  viewMode: null
+  limit: '5'
+  selectionLabel: ''
+  localizeRelations: false
+  validateRelatedElements: ''
+contentColumnType: string
+fieldGroup: null

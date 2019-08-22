@@ -8,6 +8,7 @@ use craft\helpers\FileHelper;
 use craft\helpers\StringHelper;
 use Symfony\Component\Yaml\Yaml;
 use unionco\components\Components;
+use unionco\components\models\FieldPrompt;
 use unionco\components\models\GeneratorOutput;
 use unionco\components\services\GeneratorInterface;
 use Zend\Feed\Writer\Exception\InvalidArgumentException;
@@ -32,6 +33,8 @@ class ComponentsGenerator extends Component implements GeneratorInterface
     /** @var string */
     public static $enumAllTemplate = '';
 
+    /** @var FieldPrompt[] */
+    public static $prompts = [];
 
     /** @var string */
     public $name = '';
@@ -42,6 +45,9 @@ class ComponentsGenerator extends Component implements GeneratorInterface
     /** @var string[] */
     public $fields = [];
 
+    /** @var array */
+    public $values = [];
+
     /** @return void */
     public function init()
     {
@@ -51,19 +57,44 @@ class ComponentsGenerator extends Component implements GeneratorInterface
         self::$twigSystemTemplate = self::$generatorTemplatesDir . '/component.system.twig.template';
         self::$enumConstTemplate = self::$generatorTemplatesDir . '/enum-const.component.php.template';
         self::$enumAllTemplate = self::$generatorTemplatesDir . '/enum-all.component.php.template';
+
+        static::$prompts = [
+            $namePrompt = new FieldPrompt([
+                'prompt' => 'Component name',
+                'handle' => 'name',
+                'required' => true,
+            ]),
+            new FieldPrompt([
+                'prompt' => 'Component Handle',
+                'handle' => 'handle',
+                'required' => true,
+                'default' => function () use ($namePrompt) {
+                    return StringHelper::toCamelCase($namePrompt->getValue());
+                },
+            ]),
+            new FieldPrompt([
+                'prompt' => 'Add fields',
+                'handle' => 'fields',
+                'multi' => true,
+                'options' => function () {
+                    return FieldsGenerator::getFields();
+                },
+            ]),
+        ];
+
         parent::init();
     }
 
     /**
      * Generate scaffolding for a new component
-     * @param string $name
      * @param array $opts
      * @return GeneratorOutput[]
      */
-    public function generate($name, $opts = []): array
+    public function generate($opts = []): array
     {
-        $this->name = $name;
-        $this->fields = $opts['fields'] ?? [];
+        $this->values = $opts['values'];
+        $this->name = $this->values['name'];
+        $this->fields = $this->values['fields'];
 
         /** @var GeneratorOutput[] */
         $output = [];
