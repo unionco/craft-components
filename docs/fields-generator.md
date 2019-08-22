@@ -72,5 +72,5 @@ Proceed? (yes|no) [no]:
 | SuperTable | :heavy_check_mark: | :heavy_check_mark: |
 | Table | | |
 | Tags | | |
-| URL | | |
+| URL | | :heavy_check_mark: |
 | Users | | |
