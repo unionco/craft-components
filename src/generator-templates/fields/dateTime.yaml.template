@@ -1,0 +1,13 @@
+name: '{{FieldName}}'
+handle: {{FieldHandle}}
+instructions: '{{FieldInstructions}}'
+searchable: true
+translationMethod: none
+translationKeyFormat: null
+type: craft\fields\Date
+settings:
+    showDate: {{FieldShowDate}}
+    showTime: {{FieldShowTime}}
+    minuteIncrement: '{{FieldMinInc}}'
+contentColumnType: datetime
+fieldGroup: null 

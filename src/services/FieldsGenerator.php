@@ -132,6 +132,7 @@ class FieldsGenerator extends Component implements GeneratorInterface
     public static function fieldTypes()
     {
         return [
+            'dateTime' => 'DateTime',
             'email' => 'Email',
             'entries' => 'Entries',
             'imageAsset' => 'ImageAsset',
