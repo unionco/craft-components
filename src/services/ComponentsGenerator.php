@@ -118,13 +118,13 @@ class ComponentsGenerator extends Component implements GeneratorInterface
         $pascalCase = StringHelper::toPascalCase($this->name);
         $fileName = $pascalCase . '.yaml';
         $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
-        
+
         $output = new GeneratorOutput();
         $output->action = 'Create component config YAML';
-        // $output->relativeDirectory = 
+        // $output->relativeDirectory =
         $output->absoluteDirectory = $targetDir;
         $output->fileName = $fileName;
-       
+
         $template = $this->concatenateFields();
         // $templatePath = self::$generatorTemplatesDir . DIRECTORY_SEPARATOR . $this->type . '.yaml.template';
         // $template = Yaml::parse(file_get_contents($templatePath));//file_get_contents($)
@@ -151,13 +151,13 @@ class ComponentsGenerator extends Component implements GeneratorInterface
         $pascalCase = StringHelper::toPascalCase($this->name);
         $fileName = $pascalCase . '.yaml';
         $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
-        
+
         $output = new GeneratorOutput();
         $output->action = 'Create component config YAML';
-        // $output->relativeDirectory = 
+        // $output->relativeDirectory =
         $output->absoluteDirectory = $targetDir;
         $output->fileName = $fileName;
-        
+
         try {
             FileHelper::writeToFile($filePath, '');
             $output->warnings[] = 'Empty YAML file has been generated. You must add your own config to the file before installing the component';
@@ -184,7 +184,7 @@ class ComponentsGenerator extends Component implements GeneratorInterface
         $output->fileName = $fileName;
 
         $template = file_get_contents(self::$phpClassTemplate);
-        $template = $this->replaceTemplateName($this->name, $template);
+        $template = $this->replaceTemplateName($template);
 
         try {
             FileHelper::writeToFile($filePath, $template);
@@ -211,7 +211,7 @@ class ComponentsGenerator extends Component implements GeneratorInterface
         $output->fileName = $fileName;
 
         $template = file_get_contents(self::$twigEmbedTemplate);
-        $template = $this->replaceTemplateName($this->name, $template);
+        $template = $this->replaceTemplateName($template);
 
         try {
             FileHelper::writeToFile($filePath, $template);
@@ -238,7 +238,7 @@ class ComponentsGenerator extends Component implements GeneratorInterface
         $output->fileName = $fileName;
 
         $template = file_get_contents(self::$twigSystemTemplate);
-        $template = $this->replaceTemplateName($this->name, $template);
+        $template = $this->replaceTemplateName($template);
 
         try {
             FileHelper::writeToFile($filePath, $template);
@@ -257,14 +257,14 @@ class ComponentsGenerator extends Component implements GeneratorInterface
         $targetDir = Components::$enumDirectory;
         $fileName = 'Components.php';
         $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
-        
+
         $output = new GeneratorOutput();
         $output->action = 'Add new component to enum';
         $output->absoluteDirectory = $targetDir;
         $output->fileName = $fileName;
 
         $template = file_get_contents(self::$enumConstTemplate);
-        $template = $this->replaceTemplateName($this->name, $template);
+        $template = $this->replaceTemplateName($template);
 
         $hostTemplate = file_get_contents($filePath);
         $anchor = '    //{{enum-const.component.php.template}}';
@@ -291,7 +291,7 @@ class ComponentsGenerator extends Component implements GeneratorInterface
         $targetDir = Components::$enumDirectory;
         $fileName = 'Components.php';
         $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
-        
+
         $output = new GeneratorOutput();
         $output->action = 'Add enum const enum ALL';
         $output->absoluteDirectory = $targetDir;
@@ -326,9 +326,19 @@ class ComponentsGenerator extends Component implements GeneratorInterface
      */
     private function replaceTemplateName($template)
     {
-        $template = preg_replace('/{{ComponentPascal}}/', StringHelper::toPascalCase($this->name), $template);
-        $template = preg_replace('/{{ComponentCamel}}/', StringHelper::toCamelCase($this->name), $template);
-        $template = preg_replace('/{{ComponentName}}/', $this->name, $template);
+        $template = StringHelper::replaceAll(
+            $template,
+            [
+                "{{ComponentPascal}}",
+                "{{ComponentCamel}}",
+                "{{ComponentName}}"
+            ],
+            [
+                StringHelper::toPascalCase($this->name),
+                StringHelper::toCamelCase($this->name),
+                $this->name
+            ]
+        );
 
         return $template;
     }

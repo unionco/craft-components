@@ -21,7 +21,6 @@ abstract class Components
     // =========================================================================
 
     const Accordion = 'Accordion';
-    const FlexibleContent = 'Flexible Content';
     const CopyContent = 'Copy Content';
     const FeatureList = 'Feature List';
     const CardGrid = 'Card Grid';
@@ -35,7 +34,7 @@ abstract class Components
     const LinkList = 'Link List';
     const Reviews = 'Reviews';
     const Tabs = 'Tabs';
-New Component
+    const FlexibleContent = 'FlexibleContent'; // Automatically generated
     //{{enum-const.component.php.template}}
 
     const ALL = [
@@ -46,7 +45,6 @@ New Component
         self::CarouselHero,
         self::CarouselText,
         self::CopyContent,
-        self::FlexibleContent,
         self::FeatureList,
         self::GalleryGrid,
         self::GalleryMasonry,
@@ -54,7 +52,7 @@ New Component
         self::Reviews,
         self::SpanningStripe,
         self::Tabs,
-            self::NewComponent, // Automatically generated
+        self::FlexibleContent, // Automatically generated
     //{{enum-all.component.php.template}}
     ];
 }

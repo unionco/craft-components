@@ -1,0 +1,19 @@
+name: '{{FieldName}}'
+handle: {{FieldHandle}}
+instructions: '{{FieldInstructions}}'
+searchable: true
+translationMethod: site
+translationKeyFormat: null
+type: craft\redactor\Field
+fieldGroup: null
+settings:
+  redactorConfig: '{{FieldRedactorConfig}}'
+  purifierConfig: ''
+  cleanupHtml: true
+  removeInlineStyles: '1'
+  removeEmptyTags: '1'
+  removeNbsp: '1'
+  purifyHtml: '1'
+  columnType: text
+  availableVolumes: {{FieldAvailableTransforms}}
+  availableTransforms: {{FieldAvailableVolumes}}

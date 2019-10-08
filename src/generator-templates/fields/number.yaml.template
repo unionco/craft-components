@@ -5,6 +5,7 @@ searchable: true
 translationMethod: none
 translationKeyFormat: null
 type: craft\fields\Number
+fieldGroup: null
 settings:
   defaultValue: '{{FieldDefault}}'
   min: '{{FieldMin}}'
@@ -13,5 +14,3 @@ settings:
   size: null
   prefix: ''
   suffix: ''
-contentColumnType: integer(10)
-fieldGroup: null

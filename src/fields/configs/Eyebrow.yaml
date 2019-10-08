@@ -1,11 +1,10 @@
-name: '{{FieldName}}'
-handle: {{FieldHandle}}
-instructions: '{{FieldInstructions}}'
+name: 'Eyebrow'
+handle: eyebrow
+instructions: 'Usually serves as the small text above the main heading'
 searchable: true
 translationMethod: site
 translationKeyFormat: null
 type: craft\fields\PlainText
-fieldGroup: null
 settings:
   placeholder: ''
   code: ''
@@ -14,3 +13,4 @@ settings:
   charLimit: ''
   columnType: text
   contentColumnType: text
+  fieldGroup: null

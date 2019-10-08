@@ -1,0 +1,19 @@
+name: 'Copy'
+handle: copy
+instructions: ''
+searchable: true
+translationMethod: site
+translationKeyFormat: null
+type: craft\redactor\Field
+settings:
+  redactorConfig: 'default'
+  purifierConfig: ''
+  cleanupHtml: true
+  removeInlineStyles: '1'
+  removeEmptyTags: '1'
+  removeNbsp: '1'
+  purifyHtml: '1'
+  columnType: text
+  availableVolumes: '*'
+  availableTransforms: '*'
+contentColumnType: text

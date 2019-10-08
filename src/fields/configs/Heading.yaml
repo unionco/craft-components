@@ -1,11 +1,10 @@
-name: '{{FieldName}}'
-handle: {{FieldHandle}}
-instructions: '{{FieldInstructions}}'
+name: 'Heading'
+handle: heading
+instructions: ''
 searchable: true
 translationMethod: site
 translationKeyFormat: null
 type: craft\fields\PlainText
-fieldGroup: null
 settings:
   placeholder: ''
   code: ''
@@ -14,3 +13,4 @@ settings:
   charLimit: ''
   columnType: text
   contentColumnType: text
+  fieldGroup: null

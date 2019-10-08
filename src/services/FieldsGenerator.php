@@ -30,6 +30,7 @@ class FieldsGenerator extends Component implements GeneratorInterface
         'pdfAsset' => 'PdfAsset',
         'plainText' => 'Plain Text',
         'supertable' => 'Super Table',
+        'redactor' => 'Redactor',
         'tags' => 'Tags',
         'url' => 'Url',
         'users' => 'Users',
@@ -133,7 +134,7 @@ class FieldsGenerator extends Component implements GeneratorInterface
 
     /**
      * Replace variables in the template, returning a string template
-     * 
+     *
      * @param string $template Template contents
      * @return string template contents with replacements
      */

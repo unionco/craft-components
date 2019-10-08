@@ -1,0 +1,21 @@
+tabs:
+  -
+    name: Copy
+    sortOrder: 1
+    fields:
+      -
+        name: Eyebrow
+        handle: eyebrow
+        instructions: 'Usually serves as the small text above the main heading'
+        searchable: true
+        translationMethod: site
+        translationKeyFormat: null
+        type: craft\fields\PlainText
+        settings:
+          placeholder: ''
+          code: ''
+          multiline: ''
+          initialRows: '2'
+          charLimit: ''
+          columnType: text
+        fieldGroup: null

@@ -1,10 +1,18 @@
 <?php
+
 /**
- * NOTE: This file was automatically generated, update values accordingly
+ * Components plugin for Craft CMS 3.x
+ *
+ * A component library for Craft cms.
+ *
+ * @link      https://github.com/unionco
+ * @copyright Copyright (c) 2019 Union
  */
+
 namespace unionco\components\components;
 
 use Craft;
+// use craft\base\FieldInterface;
 use craft\elements\Entry;
 use craft\helpers\StringHelper;
 use craft\models\EntryType;
@@ -35,9 +43,9 @@ class FlexibleContent extends BaseComponent implements ComponentInterface
      */
     public static function displayName(): string
     {
-        return 'FlexibleContent';
+        return 'Flexible Content';
     }
-    
+
     /**
      * Returns the ref used for field handles
      *
@@ -45,14 +53,14 @@ class FlexibleContent extends BaseComponent implements ComponentInterface
      */
     public static function ref(): string
     {
-        return 'flexibleContent';
+        return 'fc';
     }
 
     // Public
     // =========================================================================
 
     /**
-     * 
+     *
      */
     public function __construct()
     {
@@ -61,7 +69,7 @@ class FlexibleContent extends BaseComponent implements ComponentInterface
     }
 
     /**
-     * 
+     *
      */
     public function install(Section $section, EntryType $entryType = null): bool
     {
@@ -76,7 +84,7 @@ class FlexibleContent extends BaseComponent implements ComponentInterface
             $entryType->hasTitleField = true;
             $entryType->titleLabel = Craft::t('components', 'Title');
             $entryType->titleFormat = null;
-            
+
             $fieldLayout = new FieldLayout();
             $fieldLayout->type = Entry::class;
         } else {
@@ -112,7 +120,7 @@ class FlexibleContent extends BaseComponent implements ComponentInterface
                 $tab->name = $tabConfig['name'];
                 $tab->sortOrder = $tabConfig['sortOrder'];
             }
-            
+
             $tab->setFields($tabFields);
             $tabs[] = $tab;
         }
