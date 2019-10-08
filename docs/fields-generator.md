@@ -57,12 +57,12 @@ Proceed? (yes|no) [no]:
 | Type | Available | Will Implement? |
 |---|---|---|
 | Assets | :heavy_check_mark: | :heavy_check_mark: |
-| Categories | :heavy_check_mark: | heavy_check_mark: |
+| Categories | :heavy_check_mark: | :heavy_check_mark: |
 | Checkboxes | | |
 | Color | | |
 | Date/Time | | :heavy_check_mark: |
 | Email | :heavy_check_mark: | :heavy_check_mark: |
-| Entries | heavy_check_mark: | :heavy_check_mark: |
+| Entries |:heavy_check_mark: | :heavy_check_mark: |
 | Lightswitch | :heavy_check_mark: | :heavy_check_mark: |
 | Matrix | :heavy_check_mark: | :heavy_check_mark: |
 | Multi-select | | |
@@ -70,7 +70,7 @@ Proceed? (yes|no) [no]:
 | Plain Text | :heavy_check_mark: | :heavy_check_mark: |
 | Radio Buttons | | |
 | Table | | |
-| Tags | :heavy_check_mark: | heavy_check_mark: |
+| Tags | :heavy_check_mark: |:heavy_check_mark: |
 | URL | :heavy_check_mark: | :heavy_check_mark: |
 | Users | :heavy_check_mark: | :heavy_check_mark: |
 
