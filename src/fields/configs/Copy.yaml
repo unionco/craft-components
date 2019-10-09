@@ -5,6 +5,7 @@ searchable: true
 translationMethod: site
 translationKeyFormat: null
 type: craft\redactor\Field
+fieldGroup: null
 settings:
   redactorConfig: 'default'
   purifierConfig: ''
@@ -16,4 +17,3 @@ settings:
   columnType: text
   availableVolumes: '*'
   availableTransforms: '*'
-contentColumnType: text

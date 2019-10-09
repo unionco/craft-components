@@ -11,6 +11,7 @@ tabs:
         translationMethod: site
         translationKeyFormat: null
         type: craft\fields\PlainText
+        fieldGroup: null
         settings:
           placeholder: ''
           code: ''
@@ -18,4 +19,39 @@ tabs:
           initialRows: '2'
           charLimit: ''
           columnType: text
+      -
+        name: Heading
+        handle: heading
+        instructions: ''
+        searchable: true
+        translationMethod: site
+        translationKeyFormat: null
+        type: craft\fields\PlainText
         fieldGroup: null
+        settings:
+          placeholder: ''
+          code: ''
+          multiline: ''
+          initialRows: '2'
+          charLimit: ''
+          columnType: text
+      -
+        name: Copy
+        handle: copy
+        instructions: ''
+        searchable: true
+        translationMethod: site
+        translationKeyFormat: null
+        type: craft\redactor\Field
+        fieldGroup: null
+        settings:
+          redactorConfig: default
+          purifierConfig: ''
+          cleanupHtml: true
+          removeInlineStyles: '1'
+          removeEmptyTags: '1'
+          removeNbsp: '1'
+          purifyHtml: '1'
+          columnType: text
+          availableVolumes: '*'
+          availableTransforms: '*'

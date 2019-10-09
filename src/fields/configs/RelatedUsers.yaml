@@ -5,8 +5,9 @@ searchable: true
 translationMethod: site
 translationKeyFormat: null
 type: craft\fields\Entries
+fieldGroup: null
 settings:
-  sources: 
+  sources:
   - 'group:10942228-e351-4009-b2d9-c3496e684008'
   source: null
   targetSiteId: null
@@ -15,5 +16,3 @@ settings:
   selectionLabel: ''
   localizeRelations: false
   validateRelatedElements: ''
-contentColumnType: string
-fieldGroup: null

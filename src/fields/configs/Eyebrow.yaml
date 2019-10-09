@@ -5,6 +5,7 @@ searchable: true
 translationMethod: site
 translationKeyFormat: null
 type: craft\fields\PlainText
+fieldGroup: null
 settings:
   placeholder: ''
   code: ''
@@ -12,5 +13,3 @@ settings:
   initialRows: '2'
   charLimit: ''
   columnType: text
-  contentColumnType: text
-  fieldGroup: null
